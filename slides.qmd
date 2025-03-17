@@ -1,0 +1,51 @@
+---
+title: "progress report"
+author: "Valentin Marteau"
+format: 
+  revealjs:
+    theme: simple
+    hash-type: number
+    transition: slide
+    slideNumber: true
+    auto-stretch: false
+    self-contained: true
+    height: 900
+    width: 1600
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+## Shears are more powerfull scissors
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+:::
+
+::: {.column width="50%"}
+\vspace{10mm}
+![](img/shears.png){width=75%}
+:::
+
+::::
+
+
+---
+
+## Going to sleep
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+$$ \hat{w} = \arg \min_{w} \left( \| B - X w \|^2 + \lambda \| w \|^2 \right) $$
+
+:::
+
+::: {.column width="50%"}
+![PMID:](img/scissor_paper.png){width=95%}
+:::
+
+::::
