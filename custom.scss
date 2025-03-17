@@ -1,0 +1,120 @@
+/*-- scss:defaults --*/
+
+// fonts
+$font-family-sans-serif: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif !default;
+
+// colors
+$light-body-bg: hsl(212, 15%, 97%) !default; // Light Mode base color
+$dark-body-bg: hsl(212, 15%, 13%) !default; // Dark Mode base color
+$light-body-color: #000 !default;
+$dark-body-color: #fff !default;
+$link-color: #51483d !default;
+$selection-bg: #26351c !default;
+
+// headings
+$presentation-heading-font: $font-family-sans-serif !default;
+$presentation-heading-color-light: #383d3d !default;
+$presentation-heading-color-dark: #ddd !default;
+
+/*-- scss:rules --*/
+
+.reveal a {
+  line-height: 1.3em;
+}
+
+// Define color variables based on the extracted values
+$accent-hue: 215;
+$accent-saturation: 75%;
+$accent-lightness-light: 60%;
+$accent-lightness-dark: 70%;
+
+$h1-color-light: #000;
+$h1-color-dark: #fff;
+$h2-color-light: #000;
+$h2-color-dark: #fff;
+$h3-color-light: hsl($accent-hue, $accent-saturation, $accent-lightness-light);
+$h3-color-dark: hsl($accent-hue, $accent-saturation, $accent-lightness-dark);
+$h4-color: #e5b567;
+$h5-color: #e83e3e;
+$h6-color: #666;
+
+// Custom color assignments
+$strong-color: #e89a3c;
+$em-color: #e89a3c;
+$quote-color: #3eb4bf;
+
+// Highlight colors
+$highlight-bg-normal: hsla(50, 100%, 50%, 0.15) !default;
+$highlight-bg-underline: hsla(50, 100%, 50%, 1) !default;
+$highlight-bg-active: hsla(50, 100%, 50%, 0.2) !default;
+
+// Other typography settings
+$h1-size: 1.7rem;
+$h2-size: 1.5rem;
+$h3-size: 1.2rem;
+$h4-size: 1.1rem;
+$h5-size: 1rem;
+$h6-size: 0.9rem;
+
+// Misc
+$link-decoration: underline;
+
+// Radius settings
+$radius-s: 4px;
+$radius-m: 8px;
+$radius-l: 10px;
+$radius-xl: 16px;
+
+// Layout settings
+$line-width: 40rem;
+$line-height: 1.5;
+$max-width: 90%;
+$max-col-width: 18em;
+
+// Apply styles for italic and bold text
+em {
+  color: $em-color;
+}
+
+strong {
+  color: $strong-color;
+}
+
+// Mixin for theming
+@mixin theme-light {
+  background-color: $light-body-bg;
+  color: $light-body-color;
+  h1 { color: $h1-color-light; }
+  h2 { color: $h2-color-light; }
+  h3 { color: $h3-color-light; }
+}
+
+@mixin theme-dark {
+  background-color: $dark-body-bg;
+  color: $dark-body-color;
+  h1 { color: $h1-color-dark; }
+  h2 { color: $h2-color-dark; }
+  h3 { color: $h3-color-dark; }
+}
+
+// Auto apply theme based on system preference
+@media (prefers-color-scheme: dark) {
+  body {
+    @include theme-dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    @include theme-light;
+  }
+}
+
+// Apply theme based on class (for manual override)
+body.theme-light {
+  @include theme-light;
+}
+
+body.theme-dark {
+  @include theme-dark;
+}

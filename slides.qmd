@@ -3,7 +3,7 @@ title: "progress report"
 author: "Valentin Marteau"
 format: 
   revealjs:
-    theme: simple
+    theme: [default, custom.scss]
     hash-type: number
     transition: slide
     slideNumber: true
@@ -45,7 +45,14 @@ $$ \hat{w} = \arg \min_{w} \left( \| B - X w \|^2 + \lambda \| w \|^2 \right) $$
 :::
 
 ::: {.column width="50%"}
+\centering
 ![PMID:](img/scissor_paper.png){width=95%}
 :::
 
 ::::
+
+
+## test
+
+- **bla**
+- *bla*
