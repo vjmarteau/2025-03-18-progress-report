@@ -1,1 +1,2 @@
-# 2025-03-18-progress-report2025-03-18-progress-report
+#  icbi-lab progress report: shears
+date: 18-03-2025
