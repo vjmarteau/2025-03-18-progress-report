@@ -1,6 +1,7 @@
 ---
 title: "progress report"
 author: "Valentin Marteau"
+date: "March 18, 2025"
 format: 
   revealjs:
     theme: [default, custom.scss]
@@ -16,43 +17,141 @@ knitr:
     echo: false
 ---
 
-## Shears are more powerfull scissors
+##
+<div style="
+  height: 100%; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: flex-start;
+  position: relative;
+">
+
+  <h1 style="margin-top: 15%; text-align: center;">
+    Shears are more powerful <br> scissors
+  </h1>
+
+  <img src="img/shears.png" style="
+    width: 35%; 
+    position: absolute; 
+    bottom: 200px; 
+    right: 50px;
+  "/>
+
+</div>
+
+## scissor criticism
 
 :::: {.columns}
 
 ::: {.column width="50%"}
 
+[![](img/scissor_paper.png){width=95%}
+
+<div style="font-size: 0.75em;">
+- method to associate single cells from scRNA-seq datasets with phenotypic or clinical information of bulk RNA-seq samples ([PMID:34764492](https://doi.org/10.1038/s41587-021-01091-3))
+</div>
 :::
 
 ::: {.column width="50%"}
-\vspace{10mm}
-![](img/shears.png){width=75%}
+
+<div style="font-size: 0.75em; line-height: 1.3;">
+- computationally expensive (several thousand CPU hours for the CRC atlas)
+- biological replicates in the single-cell data are not taken into account
+- despite being based on a GLM it is not possible to include covariates into the regression analysis
+- Scissor results are always relative to the other cells present in the single-cell RNA-seq dataset
+</div>
+
 :::
 
 ::::
 
+## Alternative approach: shears[^1]
 
----
+Two step approach:<br>
+<br>
+1. Generate bulk x cell matrix with cell weights<br>
+<div style="font-size: 0.5em; line-height: 2;">
+-> Assumption: bulk=weights*single cells<br>
+<br>
+We need to compute a weight for each single-cell and each bulk sample. This is similar to deconvolution, except we have a single-cell matrix instead of a signature matrix aggregated by cell types and can be solved with e.g. linear regression. Since we have way too many features, we apply a Ridge constraint to the regression.
+</div>
+<br>
+2. Compute the importance of each cell for a given phenotype<br>
+<div style="font-size: 0.5em; line-height: 1.3;">
+Use an individual linear model per cell. Fit a model<br>
+<br>
+-> Phenotype ~ cell_weight<br>
+<br>
+for each cell. The coeﬃcient of the model can be considered as the eﬀect size measured for each cell. The problem with this approach is that a cell will be signiﬁcantly associated, even if the eﬀect could be explained with other cells. I'd expect this to be mostly a problem when using a correlation matrix instead of a weight matrix that already takes the importance of each cell into account.
+</div>
 
-## Going to sleep
+[^1]: <hr style="width:50%; margin: 0 0 4px -25px; border:1px solid gray;">  
+The idea was first developed by [Gregor Sturm](https://github.com/grst)
 
-:::: {.columns}
 
-::: {.column width="50%"}
+## single cell colorectal cancer atlas
 
-$$ \hat{w} = \arg \min_{w} \left( \| B - X w \|^2 + \lambda \| w \|^2 \right) $$
-
+::: {.center style="text-align: center;"}
+![](img/crc_atlas.png){width=50%}
 :::
 
-::: {.column width="50%"}
-\centering
-![PMID:](img/scissor_paper.png){width=95%}
+## Compute cell weights for each bulk sample
+<br>
+<div style="width: 65%; margin: 0 auto;">
+- <span style="display:block; margin-bottom:15px;">Quantile normalization to make bulk and single-cell comparable (as done by scissor)</span>
+- <span style="display:block; margin-bottom:15px;">Ridge regression to estimate weights for the following equation</span>
+
+$$
+B = w_1 S_1 + w_2 S_2 + \dots + w_n S_n
+$$
+</div>
+
+## Compute cell weights for each bulk sample
+
+::: {.center style="text-align: center;"}
+![weights for three different AC-ICAM cohort patients](img/pearson_corrs_vs_shears_weights.png){width=77%}
 :::
 
-::::
+## Aggregate to cell-type fractions
+
+::: {.center style="text-align: center;"}
+![similar to other deconvolution methods; bulk samples x cell type matrix](img/AC_ICAM_pearson_corr_heatmap.png){width=80%}
+:::
 
 
-## test
+## Comparison of cell weights between conditions
+<br>
+<div style="width: 60%; margin: 0 auto;">
+For each cell:<br>
+<br>
+weight ~ condition + covariates<br>
+<br>
+-> coefficient and p-value for condition
+</div>
 
-- **bla**
-- *bla*
+## shears survival
+
+::: {.center style="text-align: center;"}
+![](img/shears_survival.png){width=100%}
+:::
+
+## shears KRAS mutation
+
+::: {.center style="text-align: center;"}
+![](img/shears_kras.png){width=100%}
+:::
+
+## shears BRAF mutation
+
+::: {.center style="text-align: center;"}
+![](img/shears_braf.png){width=100%}
+:::
+
+## Limitations
+<br>
+<div style="width: 60%; margin: 0 auto;">
+- <span style="display:block; margin-bottom:15px;">Multicollinearity, i.e. can shears distinguish between similar cell-types?</span>
+- <span style="display:block; margin-bottom:15px;">How to validate?</span>
+- <span style="display:block; margin-bottom:15px;">Code is available at [icbi-lab/shears](https://github.com/icbi-lab/shears)</span>
+</div>
